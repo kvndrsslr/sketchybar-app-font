@@ -1,5 +1,10 @@
 # sketchybar-app-font
-A ligature-based symbol font and a mapping function for sketchybar, inspired by simple-bar's usage of community-contributed ]minimalistic app icons
+A ligature-based symbol font and a mapping function for sketchybar, inspired by simple-bar's usage of community-contributed minimalistic app icons.
+Please feel free to contribute icons or add applications to the mappings through PRs.
+
+If you can't contribute yourself, you can ask for icons in issues and *maybe* someone will work on those issues, but please note that I'm not committed to work on those issues myself.
+
+However, I will try to merge all PRs asap.
 
 ## Contribution Guideline
 
