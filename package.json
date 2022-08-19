@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "App font for sketchybar, bootstrapped using SVGs from simple-bar",
   "scripts": {
-    "font": "svgtofont -s svgs/ -o dist/"
+    "build": "svgtofont -s svgs/ -o dist/ && ./generate_icon_map_fn.sh"
   },
   "keywords": [],
   "author": "Kevin Dreßler",
