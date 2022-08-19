@@ -1,0 +1,54 @@
+name: Release System Version
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'pnpm'
+      - run: pnpm i
+      - run: pnpm run build
+
+      # Get the version from 'module.json'
+      - name: Get Version
+        shell: bash
+        id: get-version
+        run: echo "::set-output name=version::${GITHUB_REF#refs/*/}"
+
+      # Create a release for this specific version
+      - name: Create Release
+        id: create_version_release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true # set this to false if you want to prevent updating existing releases
+          name: ${{ steps.get-version.outputs.version }}
+          body: ""
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: './dist/sketchybar-app-font.ttf,./dist/icon_map_fn.sh'
+          tag: ${{ steps.get-version.outputs.version }}
+
+      # Update the 'latest' release
+      - name: Create Release
+        id: create_latest_release
+        uses: ncipollo/release-action@v1
+        if: endsWith(github.event.base_ref, 'main')
+        with:
+          allowUpdates: true
+          name: Latest
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: './dist/sketchybar-app-font.ttf,./dist/icon_map_fn.sh'
+          tag: latest
