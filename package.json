@@ -5,8 +5,8 @@
   "description": "App font for sketchybar, bootstrapped using SVGs from simple-bar",
   "scripts": {
     "build": "node ./build.js",
-    "install": "node ./install.js",
-    "dev": "node ./watch.js"
+    "build:install": "node ./install.js",
+    "build:dev": "node ./watch.js"
   },
   "keywords": [],
   "author": "Kevin Dreßler",

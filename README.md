@@ -6,6 +6,48 @@ If you can't contribute yourself, you can ask for icons in issues and *maybe* so
 
 However, I will try to merge all PRs asap.
 
+## CLI Usage
+
+```bash
+# install dependencies
+pnpm install
+# - build the files
+# - install the font to: $HOME/Library/Fonts/sketchybar-app-font.ttf
+# - install the icon map script to: $HOME/.config/sketchybar/icon-map.sh
+pnpm run build:install 
+# - build the files
+# - install the font to: $HOME/Library/Fonts/sketchybar-app-font.ttf
+# - replace the icon map function in the given script
+pnpm run build:install -- $HOME/.config/sketchybar/scripts/my-script.sh
+# same as build:install but watches changes to files in ./svgs and ./mappings and refires
+pnpm run build:dev
+pnpm run build:dev -- $HOME/.config/sketchybar/scripts/my-script.sh
+```
+
+## Configure Sketchybar
+
+### Using icon_map.sh
+
+```bash
+source ./path/to/icon_map.sh
+
+__icon_map "${app_name}"
+symbol_ligature="${icon_result}"
+```
+
+### Set up auto-replacing the icon map function in your own script
+
+1. Mark where the function should be inserted to:
+```bash
+### START-OF-ICON-MAP
+# Here be the function
+### END-OF-ICON-MAP
+```
+2. Run the install script with the argument pointing at the path of the file that has the markers:
+```bash
+pnpm run build:install -- $HOME/.config/sketchybar/scripts/my-script.sh
+```
+
 ## Contribution Guideline
 
 *(Core method copied from https://github.com/Jean-Tinland/simple-bar/issues/164#issuecomment-896912216)*
@@ -17,13 +59,3 @@ For each icon I'm following these steps:
 3. Then I'm optimising it using [SVGOMG](https://jakearchibald.github.io/svgomg/)
 4. Add the icon to /svgs/ folder, using a snake_case name surrounded by colons and a '.svg' extension
 5. Add a file to /mappings/ using the same name but without the '.svg' extension. This file indicates which app names should match the icon. The format is `"App Name 1" | "App Name 2"`
-
-
-## Using icon_map_fn.sh
-
-```bash
-source ./path/to/icon_map_fn.sh
-
-icon_map "${app_name}"
-symbol_ligature="${icon_result}"
-```
