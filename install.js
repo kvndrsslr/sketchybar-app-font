@@ -30,8 +30,8 @@ export function install(replaceInScriptPath) {
     fs.writeFileSync(pathToScript, newScriptContents, "utf8");
   } else {
     fs.copyFileSync(
-      "./dist/icon-map.sh",
-      `${process.env.HOME}/.config/sketchybar/icon-map.sh`
+      "./dist/icon_map.sh",
+      `${process.env.HOME}/.config/sketchybar/icon_map.sh`
     );
   }
 

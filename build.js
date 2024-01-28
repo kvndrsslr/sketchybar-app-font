@@ -41,15 +41,15 @@ ${iconMap
 ${endMarker}`;
 
   fs.writeFileSync(
-    "./dist/icon-map.sh",
+    "./dist/icon_map.sh",
     `#!/usr/bin/env bash
 ${iconMapBashFn}
 `,
     "utf8"
   );
 
-  // chmod +x ./dist/icon-map.sh
-  fs.chmodSync("./dist/icon-map.sh", 0o755);
+  // chmod +x ./dist/icon_map.sh
+  fs.chmodSync("./dist/icon_map.sh", 0o755);
 
   return { iconMapBashFn };
 }

@@ -13,7 +13,7 @@ However, I will try to merge all PRs asap.
 pnpm install
 # - build the files
 # - install the font to: $HOME/Library/Fonts/sketchybar-app-font.ttf
-# - install the icon map script to: $HOME/.config/sketchybar/icon-map.sh
+# - install the icon map script to: $HOME/.config/sketchybar/icon_map.sh
 pnpm run build:install 
 # - build the files
 # - install the font to: $HOME/Library/Fonts/sketchybar-app-font.ttf
