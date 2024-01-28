@@ -20,37 +20,19 @@ jobs:
           cache: 'pnpm'
       - run: pnpm i
       - run: pnpm run build
-
-      # Get the version from 'module.json'
-      - name: Get Version
-        shell: bash
-        id: get-version
-        run: echo "::set-output name=version::${GITHUB_REF#refs/*/}"
-
-      # Create a release for this specific version
-      - name: Create Release
-        id: create_version_release
-        uses: ncipollo/release-action@v1
-        with:
-          allowUpdates: true # set this to false if you want to prevent updating existing releases
-          name: ${{ steps.get-version.outputs.version }}
-          body: ""
-          draft: false
-          prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: './dist/sketchybar-app-font.ttf,./dist/icon_map.sh,./LICENSE'
-          tag: ${{ steps.get-version.outputs.version }}
-
-      # Update the 'latest' release
-      - name: Create Release
-        id: create_latest_release
-        uses: ncipollo/release-action@v1
-        if: endsWith(github.event.base_ref, 'main')
-        with:
-          allowUpdates: true
-          name: Latest
-          draft: false
-          prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: './dist/sketchybar-app-font.ttf,./dist/icon_map.sh,./LICENSE'
-          tag: latest
+      # create a release with the tag name and the build artifacts (./dist/icon_map.sh and ./dist/sketchybar-app-font.ttf)
+      # the description should be the commitlog since the last tag
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+        run: |
+          gh release create "$tag" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
+              --generate-notes
+          gh release upload "$tag" \
+              --repo="$GITHUB_REPOSITORY" \
+              --clobber \
+              ./dist/icon_map.sh \
+              ./dist/sketchybar-app-font.ttf
