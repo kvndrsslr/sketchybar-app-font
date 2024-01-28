@@ -38,7 +38,7 @@ jobs:
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: './dist/sketchybar-app-font.ttf,./dist/icon_map_fn.sh,./LICENSE'
+          artifacts: './dist/sketchybar-app-font.ttf,./dist/icon_map.sh,./LICENSE'
           tag: ${{ steps.get-version.outputs.version }}
 
       # Update the 'latest' release
@@ -52,5 +52,5 @@ jobs:
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: './dist/sketchybar-app-font.ttf,./dist/icon_map_fn.sh,./LICENSE'
+          artifacts: './dist/sketchybar-app-font.ttf,./dist/icon_map.sh,./LICENSE'
           tag: latest
