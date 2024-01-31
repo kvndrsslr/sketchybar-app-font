@@ -22,6 +22,8 @@
     "useNameAsUnicode": true
   },
   "dependencies": {
-    "chokidar": "^3.5.3"
+    "chokidar": "^3.5.3",
+    "express": "^4.18.2",
+    "livereload": "^0.9.3"
   }
 }

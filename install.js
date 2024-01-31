@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-export function install(replaceInScriptPath) {
+export function install(replaceInScriptPath, refreshSketchybar = true) {
   const { iconMapBashFn } = build();
 
   fs.copyFileSync(
@@ -35,7 +35,9 @@ export function install(replaceInScriptPath) {
     );
   }
 
-  execSync("sketchybar --reload");
+  if (refreshSketchybar) {
+    execSync("sketchybar --reload");
+  }
 }
 
 // only execute if run directly (ESM)
