@@ -10,7 +10,7 @@
   },
   "keywords": [],
   "author": "Kevin Dreßler",
-  "license": "MIT",
+  "license": "CC0-1.0",
   "devDependencies": {
     "svgtofont": "^4.1.1"
   },
