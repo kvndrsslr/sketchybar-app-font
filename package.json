@@ -15,11 +15,16 @@
     "svgtofont": "^4.1.1"
   },
   "svgtofont": {
+    "fontSize": "12px",
     "fontName": "sketchybar-app-font",
     "website": false,
     "css": false,
     "emptyDist": true,
-    "useNameAsUnicode": true
+    "useNameAsUnicode": true,
+    "svgicons2svgfont": {
+      "fixedWidth": true,
+      "centerHorizontally": true
+    }
   },
   "dependencies": {
     "chokidar": "^3.5.3",
