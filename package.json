@@ -22,8 +22,12 @@
     "emptyDist": true,
     "useNameAsUnicode": true,
     "svgicons2svgfont": {
-      "fixedWidth": true,
-      "centerHorizontally": true
+      "centerhorizontally": true,
+      "centervertically": true,
+      "height": 16,
+      "normalize": true,
+      "preserveAspectRatio": true,
+      "fixedWidth": true
     }
   },
   "dependencies": {
