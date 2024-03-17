@@ -2,10 +2,8 @@ import { execSync } from "node:child_process";
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
 
-
 export const startMarker = "### START-OF-ICON-MAP";
 export const endMarker = "### END-OF-ICON-MAP";
-
 
 export function build() {
   execSync("./node_modules/.bin/svgtofont -s svgs/ -o dist/", {
@@ -30,7 +28,7 @@ ${iconMap
     ({ appNames, iconName }) =>
       `   ${appNames})
         icon_result="${iconName}"
-        ;;`
+        ;;`,
   )
   .join("\n")}
     *)
@@ -45,8 +43,23 @@ ${endMarker}`;
     `#!/usr/bin/env bash
 ${iconMapBashFn}
 `,
-    "utf8"
+    "utf8",
   );
+
+  const iconMapLua = `return {
+${iconMap
+  .map(({ appNames, iconName }) =>
+    appNames
+      .split("|")
+      // remove all * in mappings
+      .map((app) => app.replace("*", ""))
+      .map((app) => `[${app}] = "${iconName}",`)
+      .join("\n"),
+  )
+  .join("\n")}
+}`;
+
+  fs.writeFileSync("./dist/icon_map.lua", iconMapLua, "utf8");
 
   // chmod +x ./dist/icon_map.sh
   fs.chmodSync("./dist/icon_map.sh", 0o755);
