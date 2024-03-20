@@ -53,7 +53,7 @@ ${iconMap
       .split("|")
       // remove all * in mappings
       .map((app) => app.replace("*", ""))
-      .map((app) => `[${app}] = "${iconName}",`)
+      .map((app) => `\t[${app.trim()}] = "${iconName}",`)
       .join("\n"),
   )
   .join("\n")}
