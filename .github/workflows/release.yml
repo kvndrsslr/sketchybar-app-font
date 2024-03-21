@@ -35,4 +35,5 @@ jobs:
               --repo="$GITHUB_REPOSITORY" \
               --clobber \
               ./dist/icon_map.sh \
-              ./dist/sketchybar-app-font.ttf
+              ./dist/sketchybar-app-font.ttf \
+              ./dist/icon_map.lua
