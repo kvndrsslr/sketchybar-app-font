@@ -64,6 +64,15 @@ ${iconMap
   // chmod +x ./dist/icon_map.sh
   fs.chmodSync("./dist/icon_map.sh", 0o755);
 
+  const iconMapJson = JSON.stringify(iconMap.map(a => {
+    return {
+      iconName: a.iconName,
+      appNames: a.appNames.replaceAll("\"", "").split(" | "),
+    }
+  }), null, 4)
+
+  fs.writeFileSync("./dist/icon_map.json", iconMapJson, "utf-8");
+
   return { iconMapBashFn };
 }
 
