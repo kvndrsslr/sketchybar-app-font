@@ -3,7 +3,7 @@ name: Release System Version
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
 
 jobs:
   build:
@@ -16,8 +16,8 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'pnpm'
+          node-version: "20"
+          cache: "pnpm"
       - run: pnpm i
       - run: pnpm run build
       # create a release with the tag name and the build artifacts (./dist/icon_map.sh and ./dist/sketchybar-app-font.ttf)
@@ -36,4 +36,5 @@ jobs:
               --clobber \
               ./dist/icon_map.sh \
               ./dist/sketchybar-app-font.ttf \
-              ./dist/icon_map.lua
+              ./dist/icon_map.lua \
+              ./dist/icon_map.json
