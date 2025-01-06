@@ -12,7 +12,10 @@
   "author": "Kevin Dreßler",
   "license": "CC0-1.0",
   "devDependencies": {
-    "svgtofont": "^4.1.1"
+    "svgtofont": "^6.2.0",
+    "chokidar": "^3.5.3",
+    "express": "^4.18.2",
+    "livereload": "^0.9.3"
   },
   "svgtofont": {
     "fontSize": "12px",
@@ -29,10 +32,5 @@
       "preserveAspectRatio": true,
       "fixedWidth": true
     }
-  },
-  "dependencies": {
-    "chokidar": "^3.5.3",
-    "express": "^4.18.2",
-    "livereload": "^0.9.3"
   }
 }
