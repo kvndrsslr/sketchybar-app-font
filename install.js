@@ -30,8 +30,8 @@ export function install(replaceInScriptPath, refreshSketchybar = true) {
     fs.writeFileSync(pathToScript, newScriptContents, "utf8");
   } else {
     fs.copyFileSync(
-      "./dist/icon_map.sh",
-      `${process.env.HOME}/.config/sketchybar/icon_map.sh`
+      "./dist/icon_map.lua",
+      `${process.env.HOME}/.config/sketchybar/helpers/app_icons.lua`
     );
   }
 
