@@ -67,3 +67,7 @@ For each icon I'm following these steps:
 ## Incompatible SVG Features
 
 Unfortunately the `svgtofont` library does not support all SVG Features. Therefore, you should check your icons before submitting by running `pnpm run build:dev`, looking at the command output and sight checking the font glyphs in your browser at <http://localhost:3003>.
+You may also want to try the `oslllo-svg-fixer` npm package if you encounter issues with your svg: 
+```bash
+npx oslllo-svg-fixer -s svgs-to-fix -d svgs
+```
