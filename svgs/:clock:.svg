@@ -3,7 +3,7 @@
    viewBox="0 0 28 28"
    version="1.1"
    id="svg15"
-   sodipodi:docname="Clock.svg"
+   sodipodi:docname=":clock:.svg"
    width="28"
    height="28"
    inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
@@ -21,9 +21,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="18.743196"
-     inkscape:cx="15.685692"
-     inkscape:cy="15.685692"
+     inkscape:zoom="24.011456"
+     inkscape:cx="7.2048941"
+     inkscape:cy="14.784609"
      inkscape:window-width="1712"
      inkscape:window-height="1043"
      inkscape:window-x="1"
@@ -45,11 +45,6 @@
        overflow="visible"
        id="use1" />
   </clipPath>
-  <path
-     clip-path="url(#b)"
-     d="M 0.024,0.026 H 299.976 V 299.974 H 0.024 Z"
-     id="path1"
-     transform="matrix(0.09235326,0,0,0.09235326,0.18412467,0.21349863)" />
   <circle
      cx="150"
      cy="150"
@@ -57,11 +52,11 @@
      clip-path="url(#b)"
      fill="#ffffff"
      id="circle1"
-     transform="matrix(0.09235326,0,0,0.09235326,0.18412467,0.21349863)" />
+     transform="matrix(0.092709,0,0,0.09199757,0.13076343,0.26684205)" />
   <g
      clip-path="url(#b)"
      id="g1"
-     transform="matrix(0.09235326,0,0,0.09235326,0.18412467,0.21349863)">
+     transform="matrix(0.092709,0,0,0.09199757,0.13076343,0.26684205)">
     <text
        transform="translate(195.795,75.366)"
        font-family="SanFranciscoDisplay-Light"
@@ -72,7 +67,7 @@
   <g
      clip-path="url(#b)"
      id="g2"
-     transform="matrix(0.09235326,0,0,0.09235326,0.18412467,0.21349863)">
+     transform="matrix(0.092709,0,0,0.09199757,0.13076343,0.26684205)">
     <text
        transform="translate(228.008,112.204)"
        font-family="SanFranciscoDisplay-Light"
@@ -83,7 +78,7 @@
   <g
      clip-path="url(#b)"
      id="g3"
-     transform="matrix(0.09235326,0,0,0.09235326,0.18412467,0.21349863)">
+     transform="matrix(0.092709,0,0,0.09199757,0.13076343,0.26684205)">
     <text
        transform="translate(241.233,159.913)"
        font-family="SanFranciscoDisplay-Light"
@@ -94,7 +89,7 @@
   <g
      clip-path="url(#b)"
      id="g4"
-     transform="matrix(0.09235326,0,0,0.09235326,0.18412467,0.21349863)">
+     transform="matrix(0.092709,0,0,0.09199757,0.13076343,0.26684205)">
     <text
        transform="translate(226.556,212.152)"
        font-family="SanFranciscoDisplay-Light"
@@ -105,7 +100,7 @@
   <g
      clip-path="url(#b)"
      id="g5"
-     transform="matrix(0.09235326,0,0,0.09235326,0.18412467,0.21349863)">
+     transform="matrix(0.092709,0,0,0.09199757,0.13076343,0.26684205)">
     <text
        transform="translate(190.216,247.07)"
        font-family="SanFranciscoDisplay-Light"
@@ -116,7 +111,7 @@
   <g
      clip-path="url(#b)"
      id="g6"
-     transform="matrix(0.09235326,0,0,0.09235326,0.18412467,0.21349863)">
+     transform="matrix(0.092709,0,0,0.09199757,0.13076343,0.26684205)">
     <text
        transform="translate(140.038,262.275)"
        font-family="SanFranciscoDisplay-Light"
@@ -127,7 +122,7 @@
   <g
      clip-path="url(#b)"
      id="g7"
-     transform="matrix(0.09235326,0,0,0.09235326,0.18412467,0.21349863)">
+     transform="matrix(0.092709,0,0,0.09199757,0.13076343,0.26684205)">
     <text
        transform="translate(90.934,247.418)"
        font-family="SanFranciscoDisplay-Light"
@@ -138,7 +133,7 @@
   <g
      clip-path="url(#b)"
      id="g8"
-     transform="matrix(0.09235326,0,0,0.09235326,0.18412467,0.21349863)">
+     transform="matrix(0.092709,0,0,0.09199757,0.13076343,0.26684205)">
     <text
        transform="translate(51.299,212.495)"
        font-family="SanFranciscoDisplay-Light"
@@ -149,7 +144,7 @@
   <g
      clip-path="url(#b)"
      id="g9"
-     transform="matrix(0.09235326,0,0,0.09235326,0.18412467,0.21349863)">
+     transform="matrix(0.092709,0,0,0.09199757,0.13076343,0.26684205)">
     <text
        transform="translate(39.729,160.092)"
        font-family="SanFranciscoDisplay-Light"
@@ -160,7 +155,7 @@
   <g
      clip-path="url(#b)"
      id="g10"
-     transform="matrix(0.09235326,0,0,0.09235326,0.18412467,0.21349863)">
+     transform="matrix(0.092709,0,0,0.09199757,0.13076343,0.26684205)">
     <text
        transform="translate(48.687,112.504)"
        font-family="SanFranciscoDisplay-Light"
@@ -171,7 +166,7 @@
   <g
      clip-path="url(#b)"
      id="g11"
-     transform="matrix(0.09235326,0,0,0.09235326,0.18412467,0.21349863)">
+     transform="matrix(0.092709,0,0,0.09199757,0.13076343,0.26684205)">
     <text
        transform="translate(85.844,75.099)"
        font-family="SanFranciscoDisplay-Light"
@@ -182,7 +177,7 @@
   <g
      clip-path="url(#b)"
      id="g12"
-     transform="matrix(0.09235326,0,0,0.09235326,0.18412467,0.21349863)">
+     transform="matrix(0.092709,0,0,0.09199757,0.13076343,0.26684205)">
     <text
        transform="translate(133.613,60.044)"
        font-family="SanFranciscoDisplay-Light"
@@ -193,7 +188,7 @@
   <g
      clip-path="url(#b)"
      id="g13"
-     transform="matrix(0.09235326,0,0,0.09235326,0.18412467,0.21349863)">
+     transform="matrix(0.092709,0,0,0.09199757,0.13076343,0.26684205)">
     <path
        d="m 149.962,155.869 c -3.236,0 -5.87,-2.633 -5.87,-5.869 0,-3.236 2.633,-5.869 5.87,-5.869 3.237,0 5.869,2.633 5.869,5.869 0,3.236 -2.632,5.869 -5.869,5.869 z"
        fill="#f9a050"
@@ -207,10 +202,42 @@
      clip-path="url(#b)"
      fill="#f9a050"
      id="path14"
-     transform="matrix(0.09235326,0,0,0.09235326,0.18412467,0.21349863)" />
+     transform="matrix(0.092709,0,0,0.09199757,0.13076343,0.26684205)" />
   <path
      d="m 46.553,197.972 98.934,-44.048 a 1.7859436,1.7859436 0 1 0 -1.453,-3.263 L 45.1,194.709 a 1.785,1.785 0 0 0 -0.905,2.358 1.785,1.785 0 0 0 2.358,0.905 z m 32.591,-71.652 63.619,23.786 a 1.792,1.792 0 0 0 2.299,-1.048 1.792,1.792 0 0 0 -1.048,-2.299 L 80.395,122.973 a 1.792,1.792 0 0 0 -2.299,1.048 1.792,1.792 0 0 0 1.048,2.299 z"
      clip-path="url(#b)"
      id="path15"
-     transform="matrix(0.09235326,0,0,0.09235326,0.18412467,0.21349863)" />
+     transform="matrix(0.092709,0,0,0.09199757,0.13076343,0.26684205)" />
+  <rect
+     x="0.48329112"
+     y="0.53433722"
+     width="27.142399"
+     height="27.053692"
+     ry="5.6936312"
+     style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:0.616908pt"
+     id="rect208" />
+  <rect
+     style="fill:none"
+     id="rect1"
+     width="3.6628113"
+     height="0.92860001"
+     x="-7.9446893"
+     y="0.67065561"
+     ry="0.46430001" />
+  <rect
+     style="fill:none"
+     id="rect2"
+     width="5.1073003"
+     height="0.36112222"
+     x="-4.5914111"
+     y="0.41271111"
+     ry="0.18056111" />
+  <rect
+     style="fill:none"
+     id="rect3"
+     width="3.1985111"
+     height="12.690867"
+     x="-7.2740335"
+     y="-1.0833668"
+     ry="0.18056111" />
 </svg>
