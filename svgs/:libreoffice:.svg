@@ -1,1 +1,5 @@
-<svg width="219" height="264"><g stroke="#000" stroke-linejoin="round" stroke-width="13"><path d="M60 6.2H6.5v251h206V153.469zM212 110.531V3.5H100z"/></g></svg>
+<svg width="219" height="264" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#000" stroke-linejoin="round" stroke-width="13">
+    <path d="M60 6.2H6.5v251h206V153.469zM212 110.531V3.5H100z" />
+  </g>
+</svg>
