@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="40.561699"
+   height="24"
+   viewBox="0 0 40.561699 24"
+   fill="none"
+   version="1.1"
+   id="svg23"
+   sodipodi:docname="native_instruments.svg"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview23"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="3.8518519"
+     inkscape:cx="108.12981"
+     inkscape:cy="11.942308"
+     inkscape:window-width="1888"
+     inkscape:window-height="985"
+     inkscape:window-x="2576"
+     inkscape:window-y="230"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg23" />
+  <g
+     clip-path="url(#clip0_2132_30313)"
+     id="g1">
+    <path
+       d="M 28.3769,24 32.2783,19.902 16.4595,5.00242 C 13.4135,2.12874 11.0619,0 7.32148,0 2.19139,0 0,3.99109 0,8.88665 V 23.0421 H 6.03837 V 8.62105 c 0,-1.75627 0.4277,-3.08664 1.81656,-3.08664 0.96194,0 1.60349,0.63886 2.83217,1.75627 L 28.3761,24 Z m 6.1993,-0.9579 h 5.9855 V 0.744941 h -5.9855 z"
+       fill="#161819"
+       id="path1" />
+  </g>
+  <defs
+     id="defs23">
+    <clipPath
+       id="clip0_2132_30313">
+      <rect
+         width="40.562599"
+         height="24"
+         fill="#ffffff"
+         id="rect21"
+         x="0"
+         y="0" />
+    </clipPath>
+    <clipPath
+       id="clip1_2132_30313">
+      <rect
+         width="163.539"
+         height="22.5231"
+         fill="#ffffff"
+         transform="translate(52.3252,0.738525)"
+         id="rect22"
+         x="0"
+         y="0" />
+    </clipPath>
+    <clipPath
+       id="clip2_2132_30313">
+      <rect
+         width="163.38499"
+         height="22.5231"
+         fill="#ffffff"
+         transform="translate(52.3252,0.738525)"
+         id="rect23"
+         x="0"
+         y="0" />
+    </clipPath>
+  </defs>
+</svg>
