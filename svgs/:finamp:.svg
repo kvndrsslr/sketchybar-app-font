@@ -1,0 +1,29 @@
+<svg width="659.52" height="809.54" viewBox="0 0 174.5 214.19" xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg">
+   <defs>
+      <linearGradient id="b">
+         <stop style="stop-color:#ac5fc8;stop-opacity:1" offset="0" />
+         <stop style="stop-color:#ac5fc8;stop-opacity:0" offset="1" />
+      </linearGradient>
+      <linearGradient id="a">
+         <stop style="stop-color:#03a2db;stop-opacity:1" offset="0" />
+         <stop style="stop-color:#03a2db;stop-opacity:0" offset="1" />
+      </linearGradient>
+      <linearGradient xlink:href="#a" id="d" x1="56.77" y1="173.69" x2="14.91" y2="176.33"
+         gradientUnits="userSpaceOnUse" gradientTransform="translate(13.24 -340.27) scale(2.7449)" />
+      <linearGradient xlink:href="#b" id="c" x1="156.91" y1="171.53" x2="141.45" y2="174.41"
+         gradientUnits="userSpaceOnUse" gradientTransform="translate(-69.98 2.65)" />
+   </defs>
+   <path style="fill:#8374d3;fill-opacity:.976471;stroke-width:1.38759"
+      d="M86.92 174.18c.77 1.79-.78 4.13-6.97 10.6-6.64 6.92-8.5 8.13-11.25 7.31-2.74-.81-3.64-2.84-5.4-12.27-2.7-14.38-1.79-15.2 12.33-11 7.16 2.13 10.61 3.77 11.3 5.36z"
+      transform="translate(-105.19 -385.87) scale(2.7449)" />
+   <path style="fill:url(#c);fill-opacity:1;stroke-width:1.38759"
+      d="M86.92 174.18c.77 1.79-.78 4.13-6.97 10.6-6.64 6.92-8.5 8.13-11.25 7.31-2.74-.81-3.64-2.84-5.4-12.27-2.7-14.38-1.79-15.2 12.33-11 7.16 2.13 10.61 3.77 11.3 5.36z"
+      transform="translate(-105.19 -385.87) scale(2.7449)" />
+   <path style="fill:#4f87d3;stroke:none;stroke-width:4.05303"
+      d="M65.44 249.88C107.4 201.46-.87 61.24 108.18 79.4c13.37 2.08 24.8 3 44.42 1.06C179.9 64 177 59.19 194.54 42.6c-89.54 1.08-55.66 6.6-104.9-1.85-16.52-2.83-40.87-9.56-56.5-.5-17 9.82-13.04 40.65-11.84 56.93 3.5 47.43 11.22 116.4 44.14 152.7"
+      transform="translate(-20.04 -35.69)" />
+   <path style="fill:url(#d);fill-opacity:1;stroke:none;stroke-width:4.05303"
+      d="M65.44 249.88C107.4 201.46-.87 61.24 108.18 79.4c13.37 2.08 24.8 3 44.42 1.06C179.9 64 177 59.19 194.54 42.6c-89.54 1.08-55.66 6.6-104.9-1.85-16.52-2.83-40.87-9.56-56.5-.5-17 9.82-13.04 40.65-11.84 56.93 3.5 47.43 11.22 116.4 44.14 152.7"
+      transform="translate(-20.04 -35.69)" />
+</svg>
