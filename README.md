@@ -19,10 +19,11 @@ pnpm run build:install
 # - build the files
 # - install the font to: $HOME/Library/Fonts/sketchybar-app-font.ttf
 # - replace the icon map function in the given script
-pnpm run build:install -- $HOME/.config/sketchybar/scripts/my-script.sh
+# NOTE: On macOS, omit the -- separator to avoid argument parsing issues
+pnpm run build:install $HOME/.config/sketchybar/scripts/my-script.sh
 # same as build:install but watches changes to files in ./svgs and ./mappings and refires
 pnpm run build:dev
-pnpm run build:dev -- $HOME/.config/sketchybar/scripts/my-script.sh
+pnpm run build:dev $HOME/.config/sketchybar/scripts/my-script.sh
 ```
 
 ## Configure Sketchybar
@@ -49,7 +50,8 @@ symbol_ligature="${icon_result}"
 2. Run the install script with the argument pointing at the path of the file that has the markers:
 
 ```bash
-pnpm run build:install -- $HOME/.config/sketchybar/scripts/my-script.sh
+# NOTE: On macOS, omit the -- separator
+pnpm run build:install $HOME/.config/sketchybar/scripts/my-script.sh
 ```
 
 ## Contribution Guideline
