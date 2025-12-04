@@ -11,19 +11,18 @@ However, I will try to merge all PRs asap.
 
 ```bash
 # install dependencies
-pnpm install
+npm install
 # - build the files
 # - install the font to: $HOME/Library/Fonts/sketchybar-app-font.ttf
 # - install the icon map script to: $HOME/.config/sketchybar/icon_map.sh
-pnpm run build:install
+npm run build:install
 # - build the files
 # - install the font to: $HOME/Library/Fonts/sketchybar-app-font.ttf
 # - replace the icon map function in the given script
-# NOTE: On macOS, omit the -- separator to avoid argument parsing issues
-pnpm run build:install $HOME/.config/sketchybar/scripts/my-script.sh
+npm run build:install $HOME/.config/sketchybar/scripts/my-script.sh
 # same as build:install but watches changes to files in ./svgs and ./mappings and refires
-pnpm run build:dev
-pnpm run build:dev $HOME/.config/sketchybar/scripts/my-script.sh
+npm run build:dev
+npm run build:dev $HOME/.config/sketchybar/scripts/my-script.sh
 ```
 
 ## Configure Sketchybar
@@ -50,8 +49,7 @@ symbol_ligature="${icon_result}"
 2. Run the install script with the argument pointing at the path of the file that has the markers:
 
 ```bash
-# NOTE: On macOS, omit the -- separator
-pnpm run build:install $HOME/.config/sketchybar/scripts/my-script.sh
+npm run build:install $HOME/.config/sketchybar/scripts/my-script.sh
 ```
 
 ## Contribution Guideline
@@ -68,7 +66,7 @@ For each icon I'm following these steps:
 
 ## Incompatible SVG Features
 
-Unfortunately the `svgtofont` library does not support all SVG Features. Therefore, you should check your icons before submitting by running `pnpm run build:dev`, looking at the command output and sight checking the font glyphs in your browser at <http://localhost:3003>.
+Unfortunately the `svgtofont` library does not support all SVG Features. Therefore, you should check your icons before submitting by running `npm run build:dev`, looking at the command output and sight checking the font glyphs in your browser at <http://localhost:3003>.
 You may also want to try the `oslllo-svg-fixer` npm package if you encounter issues with your svg: 
 ```bash
 npx oslllo-svg-fixer -s svgs-to-fix -d svgs

@@ -1,14 +1,39 @@
 import { execSync } from "node:child_process";
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
+import { validate } from "./validate.js";
 
 export const startMarker = "### START-OF-ICON-MAP";
 export const endMarker = "### END-OF-ICON-MAP";
 
 export function build() {
-  execSync("./node_modules/.bin/svgtofont -s svgs/ -o dist/", {
-    stdio: "inherit",
-  });
+  // Validate mappings before building
+  console.log("Validating mappings...");
+  validate();
+  console.log("Building icon font...");
+  try {
+    execSync("./node_modules/.bin/svgtofont -s svgs/ -o dist/", {
+      stdio: ["inherit", "inherit", "pipe"], // capture stderr only
+    });
+  } catch (error) {
+    // Try to extract filename from error output
+    const stderr = error.stderr?.toString() || "";
+    const match = stderr.match(/glyph "([^"]+)"/);
+    
+    // Show the original error
+    if (stderr) {
+      process.stderr.write(stderr);
+    }
+    
+    if (match) {
+      console.error(`\n${"-".repeat(60)}`);
+      console.error(`Failed to process SVG: ${match[1]}`);
+      console.error("This SVG has incompatible features for font conversion.");
+      console.error(`Try fixing with: npx oslllo-svg-fixer -s svgs/${match[1]}.svg -d svgs`);
+      console.error("-".repeat(60) + "\n");
+    }
+    process.exit(1);
+  }
 
   const iconMap = fs.readdirSync("./mappings").map((file) => {
     const iconName = file.replace(".svg", "");
@@ -53,7 +78,11 @@ ${iconMap
       .split("|")
       // remove all * in mappings
       .map((app) => app.replace("*", ""))
-      .map((app) => `\t[${app.trim()}] = "${iconName}",`)
+      .map((app) => {
+        const cleanApp = app.trim();
+        // Escape Lua string by wrapping in [[ ]] for literal strings
+        return `\t[[[${cleanApp}]]] = "${iconName}",`;
+      })
       .join("\n"),
   )
   .join("\n")}
@@ -72,6 +101,8 @@ ${iconMap
   }), null, 4)
 
   fs.writeFileSync("./dist/icon_map.json", iconMapJson, "utf-8");
+
+  console.log(`\nSuccessfully built ${iconMap.length} icon mappings`);
 
   return { iconMapBashFn };
 }
