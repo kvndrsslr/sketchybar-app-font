@@ -10,10 +10,7 @@ install(process.argv[2]);
 
 const liveReloadServer = livereload.createServer();
 
-const app = express({
-  root: "./dist",
-  index: "index.html",
-});
+const app = express();
 
 app.get("*", (req, res) => {
   // Build the path of the file using the URL pathname of the request.
@@ -27,12 +24,16 @@ app.get("*", (req, res) => {
 
 const PORT = 3003;
 app.listen(PORT, () => {
-  console.log("listening on port ", PORT);
+  console.log(`\nPreview server running at http://localhost:${PORT}`);
+  console.log("Watching for changes in ./mappings and ./svgs\n");
 });
 
-chokidar.watch(["./mappings", "./svgs"]).on("change", (event, path) => {
+chokidar.watch(["./mappings", "./svgs"]).on("change", (path) => {
+  console.log(`\nFile changed: ${path}`);
+  console.log("Rebuilding...");
   install(process.argv[2], false);
   liveReloadServer.refresh("/");
+  console.log("Rebuild complete\n");
 });
 
 function getPreviewHTML() {
@@ -97,7 +98,6 @@ function getPreviewHTML() {
               )
               .join("\n")}
               </div>
-        </p>
     </body>
 </html>
 `;
