@@ -15,6 +15,7 @@
   "devDependencies": {
     "chokidar": "^3.5.3",
     "express": "^4.18.2",
+    "is-svg": "^6.1.0",
     "livereload": "^0.9.3",
     "svgtofont": "^6.2.0"
   },
@@ -33,8 +34,5 @@
       "preserveAspectRatio": true,
       "fixedWidth": true
     }
-  },
-  "dependencies": {
-    "is-svg": "^6.1.0"
   }
 }
