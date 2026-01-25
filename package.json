@@ -1,9 +1,10 @@
 {
   "type": "module",
   "name": "sketchybar-app-font",
-  "version": "2.0.49",
+  "version": "2.0.51",
   "description": "App font for sketchybar, bootstrapped using SVGs from simple-bar",
   "scripts": {
+    "validate": "node ./validate.js",
     "build": "node ./build.js",
     "build:install": "node ./install.js",
     "build:dev": "node ./watch.js"
@@ -12,10 +13,11 @@
   "author": "Kevin Dreßler",
   "license": "CC0-1.0",
   "devDependencies": {
-    "svgtofont": "^6.2.0",
     "chokidar": "^3.5.3",
     "express": "^4.18.2",
-    "livereload": "^0.9.3"
+    "is-svg": "^6.1.0",
+    "livereload": "^0.9.3",
+    "svgtofont": "^6.2.0"
   },
   "svgtofont": {
     "fontSize": "12px",
