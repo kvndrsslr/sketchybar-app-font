@@ -35,7 +35,7 @@ export function install(replaceInScriptPath, refreshSketchybar = true) {
     );
     fs.copyFileSync(
       "./dist/icon_map.lua",
-      `${process.env.HOME}/.config/sketchybar/helpers/app_icons.lua`
+      `${process.env.HOME}/.config/sketchybar/helpers/icon_map.lua`
     );
   }
 
