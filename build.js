@@ -91,7 +91,7 @@ ${iconMap
 			.join("\n")
 	)
 	.join("\n")}
-}`;
+}\n`;
 
 	fs.writeFileSync("./dist/icon_map.lua", iconMapLua, "utf8");
 
