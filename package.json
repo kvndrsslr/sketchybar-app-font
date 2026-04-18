@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "sketchybar-app-font",
-  "version": "2.0.59",
+  "version": "2.0.60",
   "description": "App font for sketchybar, bootstrapped using SVGs from simple-bar",
   "scripts": {
     "validate": "node ./validate.js",
