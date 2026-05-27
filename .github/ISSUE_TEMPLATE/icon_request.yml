@@ -1,0 +1,46 @@
+name: Icon Request
+description: Request an icon for an app that isn't in the font yet
+labels: ["icon-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to request an icon!
+        
+        > **Can you contribute it yourself?** The process is straightforward and well-documented — please check [CONTRIBUTING.md](../../blob/main/CONTRIBUTING.md) first. Even a rough attempt is welcome.
+
+  - type: input
+    id: app-name
+    attributes:
+      label: App name
+      description: The exact name of the app as it appears in the macOS menu bar / Activity Monitor.
+      placeholder: "e.g. Infuse"
+    validations:
+      required: true
+
+  - type: input
+    id: app-link
+    attributes:
+      label: App website or App Store link
+      placeholder: "https://firecore.com/infuse"
+    validations:
+      required: true
+
+  - type: input
+    id: svg-link
+    attributes:
+      label: Link to an SVG of the icon (optional but helpful)
+      description: A direct link to an SVG file, a Figma frame, or a GitHub attachment. Drag-and-drop an SVG onto this field to upload it.
+      placeholder: "https://example.com/icon.svg"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the existing issues and this app hasn't been requested yet
+          required: true
+        - label: I checked the [current font glyphs](../../releases/latest) and the icon doesn't exist yet
+          required: true

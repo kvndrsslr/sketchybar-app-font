@@ -71,6 +71,15 @@ ${endMarker}`;
 		"./dist/icon_map.sh",
 		`#!/usr/bin/env bash
 ${iconMapBashFn}
+
+# When executed directly (not sourced), map all arguments and print space-separated results.
+if [[ "\${BASH_SOURCE[0]}" == "\${0}" ]]; then
+    for app_name in "$@"; do
+        __icon_map "$app_name"
+        printf '%s ' "$icon_result"
+    done
+    [[ $# -gt 0 ]] && printf '\\n'
+fi
 `,
 		"utf8"
 	);

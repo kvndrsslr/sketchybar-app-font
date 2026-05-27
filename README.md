@@ -3,9 +3,9 @@
 A ligature-based symbol font and a mapping function for sketchybar, inspired by simple-bar's usage of community-contributed minimalistic app icons.
 Please feel free to contribute icons or add applications to the mappings through PRs.
 
-If you can't contribute yourself, you can ask for icons in issues and _maybe_ someone will work on those issues, but please note that I'm not committed to work on those issues myself.
+If you can't contribute yourself, open an [icon request issue](https://github.com/kvndrsslr/sketchybar-app-font/issues/new/choose) — someone from the community may pick it up. Note that the maintainer is not committed to working on those requests personally.
 
-However, I will try to merge all PRs asap.
+All PRs are merged as quickly as possible. See [CONTRIBUTING.md](CONTRIBUTING.md) for the full contribution guide.
 
 ## CLI Usage
 
@@ -37,6 +37,16 @@ __icon_map "${app_name}"
 symbol_ligature="${icon_result}"
 ```
 
+### Batch lookup (faster for multiple icons)
+
+`icon_map.sh` can also be called directly with multiple app names. This avoids spawning a subprocess per icon and is significantly faster when mapping several apps at once:
+
+```bash
+# Returns space-separated icon ligatures in the same order as the arguments
+icons=$(./path/to/icon_map.sh "Safari" "Finder" "Terminal")
+# ":safari: :finder: :terminal: "
+```
+
 ### Set up auto-replacing the icon map function in your own script
 
 1. Mark where the function should be inserted to:
@@ -54,22 +64,6 @@ symbol_ligature="${icon_result}"
 pnpm run build:install $HOME/.config/sketchybar/scripts/my-script.sh
 ```
 
-## Contribution Guideline
+## Contributing
 
-_(Core method copied from <https://github.com/Jean-Tinland/simple-bar/issues/164#issuecomment-896912216>)_
-
-For each icon I'm following these steps:
-
-1. I'm getting the original icon or, if not in a vector format I'm redrawing it in [Figma](https://www.figma.com). No need to be extremely precise as it is displayed in a really small size. All solid shapes will become part of the glyph. Anything you want to mask out needs to be actually masked out in the shape. Colors (including transparent color) don't matter.
-2. I'm setting the new icon in a `24x24` viewbox
-3. Then I'm optimising it using [SVGOMG](https://jakearchibald.github.io/svgomg/)
-4. Add the icon to /svgs/ folder, using a snake_case name surrounded by colons and a '.svg' extension
-5. Add a file to /mappings/ using the same name but without the '.svg' extension. This file indicates which app names should match the icon. The format is `"App Name 1" | "App Name 2"`
-
-## Incompatible SVG Features
-
-Unfortunately the `svgtofont` library does not support all SVG Features. Therefore, you should check your icons before submitting by running `pnpm run build:dev`, looking at the command output and sight checking the font glyphs in your browser at <http://localhost:3003>.
-You may also want to try the `oslllo-svg-fixer` npm package if you encounter issues with your svg: 
-```bash
-npx oslllo-svg-fixer -s svgs-to-fix -d svgs
-```
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide on adding icons and submitting PRs.
