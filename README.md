@@ -37,16 +37,6 @@ __icon_map "${app_name}"
 symbol_ligature="${icon_result}"
 ```
 
-### Batch lookup
-
-`icon_map.sh` can also be called directly with multiple app names if you prefer to not source or inline it inside your script.
-
-```bash
-# Returns space-separated icon ligatures in the same order as the arguments
-icons=$(./path/to/icon_map.sh "Safari" "Finder" "Terminal")
-# ":safari: :finder: :terminal: "
-```
-
 ### Set up auto-replacing the icon map function in your own script
 
 1. Mark where the function should be inserted to:
@@ -62,6 +52,16 @@ icons=$(./path/to/icon_map.sh "Safari" "Finder" "Terminal")
 ```bash
 # NOTE: On macOS, omit the -- separator
 pnpm run build:install $HOME/.config/sketchybar/scripts/my-script.sh
+```
+
+### Batch lookup
+
+`icon_map.sh` can also be called directly with multiple app names if you prefer to not source or inline it inside your script.
+
+```bash
+# Returns space-separated icon ligatures in the same order as the arguments
+icons=$(./path/to/icon_map.sh "Safari" "Finder" "Terminal")
+# ":safari: :finder: :terminal: "
 ```
 
 ## Contributing
