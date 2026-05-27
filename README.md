@@ -37,9 +37,9 @@ __icon_map "${app_name}"
 symbol_ligature="${icon_result}"
 ```
 
-### Batch lookup (faster for multiple icons)
+### Batch lookup
 
-`icon_map.sh` can also be called directly with multiple app names. This avoids spawning a subprocess per icon and is significantly faster when mapping several apps at once:
+`icon_map.sh` can also be called directly with multiple app names if you prefer to not source or inline it inside your script.
 
 ```bash
 # Returns space-separated icon ligatures in the same order as the arguments
