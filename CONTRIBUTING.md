@@ -21,6 +21,7 @@ _(Core method originally from [simple-bar #164](https://github.com/Jean-Tinland/
 **Prefer the logo/glyph only** — draw the symbol without any surrounding background shape (circle, rounded square, etc.). This keeps the icon set consistent and lets users apply their own background styling in sketchybar.
 
 A background container is acceptable in two cases:
+
 1. The container is an integral part of the official logo (e.g. the shape itself defines the brand).
 2. The logo consists primarily of thin lines and the container meaningfully improves readability at small sizes.
 
@@ -89,3 +90,13 @@ Place the problematic SVG in `svgs-to-fix/`, run the command, then test again wi
 - PRs are validated automatically in CI (`pnpm run validate`). Fix any reported errors before requesting review.
 
 All PRs are merged as quickly as possible.
+
+---
+
+## Maintainer automation
+
+PR validation, merging, and releases are fully automated via GitHub Actions so the repo can be run hands-off:
+
+- **`validate.yml`** runs on every PR — including fork PRs — and only has a read-only token. It validates SVGs and mappings. There are **no custom/user secrets in this repo**; the only secret referenced anywhere is GitHub's auto-generated `GITHUB_TOKEN`, so running workflows on fork PRs is safe.
+- **`auto-merge.yml`** is triggered via `workflow_run` when `Validate PR` succeeds. It runs in the base-repository context (so it can hold a write token) and only performs GitHub API operations — it never checks out or runs PR code. It automatically merges eligible icon-only PRs.
+- **`auto-release.yml`** runs daily (06:00 UTC, or manually via `workflow_dispatch`). If `main` has commits since the latest tag, it bumps the patch version, pushes the tag, and dispatches **`release.yml`** to build and cut a GitHub release.
