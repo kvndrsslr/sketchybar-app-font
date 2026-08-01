@@ -4,6 +4,9 @@ on:
   push:
     tags:
       - "v*.*.*"
+  # auto-review.yml explicitly dispatches this workflow on the new tag, because a
+  # tag pushed with GITHUB_TOKEN does not cascade-trigger workflows.
+  workflow_dispatch:
 
 jobs:
   build:

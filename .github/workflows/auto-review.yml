@@ -172,9 +172,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # Creates a patch version bump commit + `v*.*.*` tag, then pushes both.
-          # The tag push fires release.yml (build + GitHub release).
+          # A tag pushed with GITHUB_TOKEN does NOT cascade-trigger release.yml (GitHub's
+          # recursion guard), so we explicitly dispatch it on the new tag afterwards.
           npm version patch
           git push --follow-tags origin main
+
+          NEW_TAG="v$(node -p "require('./package.json').version")"
+          echo "Dispatching release.yml on tag $NEW_TAG"
+          gh workflow run release.yml --repo "$GITHUB_REPOSITORY" --ref "$NEW_TAG"
 
       - name: Summarize
         if: always()
