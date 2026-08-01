@@ -44,7 +44,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          MERGED=0
+          MERGED=false
           # List open, non-draft, mergeable PRs against main that don't carry the opt-out label.
           readarray -t PRS < <(
             gh pr list --repo "$GITHUB_REPOSITORY" \
@@ -103,9 +103,21 @@ jobs:
               continue
             fi
 
-            # Re-check mergeability in case state changed while waiting.
+            # Re-check mergeability in case state changed while waiting. After another sibling
+            # PR merges, main shifts and GitHub reports remaining PRs as UNKNOWN while it
+            # recomputes — so re-poll UNKNOWN briefly before giving up.
             MERGEABLE="$(gh pr view "$pr" --repo "$GITHUB_REPOSITORY" \
               --json mergeable --jq .mergeable)"
+            for _ in $(seq 1 20); do
+              if [ "$MERGEABLE" != "UNKNOWN" ]; then
+                break
+              fi
+              echo "  mergeable: UNKNOWN -> waiting 15s"
+              sleep 15
+              MERGEABLE="$(gh pr view "$pr" --repo "$GITHUB_REPOSITORY" \
+                --json mergeable --jq .mergeable)"
+            done
+
             if [ "$MERGEABLE" != "MERGEABLE" ]; then
               echo "  Not mergeable ($MERGEABLE) -> skipping"
               if [ "$MERGEABLE" = "CONFLICTING" ]; then
@@ -116,7 +128,7 @@ jobs:
 
             gh pr merge "$pr" --repo "$GITHUB_REPOSITORY" --squash --delete-branch
             echo "  Merged #$pr"
-            MERGED=1
+            MERGED=true
           done
 
           echo "merged=$MERGED" >> "$GITHUB_OUTPUT"
