@@ -3,13 +3,9 @@ name: Validate PR
 on:
   pull_request:
     branches: [main]
-  workflow_run:
-    workflows: ["Validate PR"]
-    types: [completed]
 
 jobs:
   validate:
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -31,115 +27,3 @@ jobs:
 
       - name: Validate SVGs and mappings
         run: pnpm run validate
-
-  merge:
-    # Triggered after the validate job above succeeds. This job runs in the
-    # base-repository context (not the PR context) so it can hold a write token,
-    # but it only performs GitHub API operations and never checks out or runs
-    # the PR code.
-    if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Auto-merge eligible icon PR
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -euo pipefail
-
-          # Identify the PR associated with the completed validate run.
-          PR_NUMBER="$(jq -r '.workflow_run.pull_requests[0].number // empty' "$GITHUB_EVENT_PATH" 2>/dev/null || true)"
-          if [ -z "$PR_NUMBER" ]; then
-            echo "No PR in workflow_run payload; trying head SHA fallback"
-            HEAD_SHA='${{ github.event.workflow_run.head_sha }}'
-            PR_NUMBER="$(gh pr list --repo "$GITHUB_REPOSITORY" --state open \
-              --json number,headRefOid \
-              --jq ".[] | select(.headRefOid == \"$HEAD_SHA\") | .number" 2>/dev/null | head -n1 || true)"
-          fi
-          if [ -z "$PR_NUMBER" ]; then
-            echo "Could not determine PR number; nothing to merge"
-            exit 0
-          fi
-
-          echo "== PR #$PR_NUMBER =="
-
-          STATE="$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" \
-            --json state --jq '.state' 2>/dev/null || true)"
-          if [ "$STATE" != "OPEN" ]; then
-            echo "PR state is '$STATE', skipping"
-            exit 0
-          fi
-
-          if [ "$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" \
-              --json isDraft --jq '.isDraft' 2>/dev/null || true)" = "true" ]; then
-            echo "PR is draft, skipping"
-            exit 0
-          fi
-
-          if [ "$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" \
-              --json labels --jq '([.labels[].name] | index("no-auto-merge")) != null' 2>/dev/null || true)" = "true" ]; then
-            echo "PR has no-auto-merge label, skipping"
-            exit 0
-          fi
-
-          # Only auto-merge icon-contribution PRs: every changed file must live under
-          # svgs/ or mappings/. Any code change is held for manual review.
-          set +e
-          FILES="$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" \
-            --json files --jq '.files[].path' 2>/dev/null)"
-          rc_files=$?
-          set -e
-          ALLOWED=true
-          if [ $rc_files -eq 0 ]; then
-            for f in $FILES; do
-              case "$f" in
-                svgs/*|mappings/*)
-                  echo "  file ok: $f" ;;
-                *)
-                  echo "  file NOT allowed: $f"; ALLOWED=false ;;
-              esac
-            done
-          else
-            echo "  could not list files (rc=$rc_files) -> holding for manual review"
-            ALLOWED=false
-          fi
-          if [ "$ALLOWED" != "true" ]; then
-            echo "Not merging (contains non-icon/code changes)"
-            BODY="This PR changes files outside **svgs/** and **mappings/**, so it can't be auto-merged. Icon contributions that only touch **svgs/** and **mappings/** are merged automatically — anything else needs manual review."
-            if ! gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" \
-                 --json comments --jq --arg body "$BODY" \
-                 'any(.comments[]; .body == $body)' 2>/dev/null | grep -qx true; then
-              gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$BODY" || true
-            fi
-            exit 0
-          fi
-
-          # Re-check mergeability; it can be UNKNOWN briefly after sibling PRs merge.
-          set +e
-          MERGEABLE="$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" \
-            --json mergeable --jq .mergeable 2>/dev/null || true)"
-          for _ in $(seq 1 20); do
-            if [ "$MERGEABLE" != "UNKNOWN" ]; then
-              break
-            fi
-            echo "  mergeable: UNKNOWN -> waiting 15s"
-            sleep 15
-            MERGEABLE="$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" \
-              --json mergeable --jq .mergeable 2>/dev/null || true)"
-          done
-          set -e
-
-          if [ "$MERGEABLE" != "MERGEABLE" ]; then
-            echo "Not mergeable ($MERGEABLE) -> skipping"
-            exit 0
-          fi
-
-          gh pr merge "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --squash --delete-branch
-          echo "  Merged #$PR_NUMBER"
