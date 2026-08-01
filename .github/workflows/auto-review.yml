@@ -45,17 +45,41 @@ jobs:
           set -euo pipefail
 
           MERGED=false
+
           # List open, non-draft, mergeable PRs against main that don't carry the opt-out label.
-          readarray -t PRS < <(
-            gh pr list --repo "$GITHUB_REPOSITORY" \
-              --base main --state open \
-              --json number,isDraft,mergeable,labels \
-              --jq '.[] |
-                    select(.isDraft == false) |
-                    select(.mergeable == "MERGEABLE") |
-                    select(([.labels[].name] | index("no-auto-merge")) != 1) |
-                    .number'
-          )
+          # Retry on empty/error: `gh pr list` has intermittently returned nothing in CI with
+          # no error, which would silently skip the day's work.
+          list_candidates() {
+            local out err tmp rc
+            tmp="$(mktemp)"
+            for attempt in 1 2 3 4 5; do
+              set +e
+              gh pr list --repo "$GITHUB_REPOSITORY" \
+                --base main --state open \
+                --json number,isDraft,mergeable,labels \
+                --jq '.[] |
+                      select(.isDraft == false) |
+                      select(.mergeable == "MERGEABLE") |
+                      select(([.labels[].name] | index("no-auto-merge")) != 1) |
+                      .number' >"$tmp" 2>"$tmp.err"
+              rc=$?
+              set -e
+              out="$(cat "$tmp" 2>/dev/null)"
+              err="$(cat "$tmp.err" 2>/dev/null)"
+              if [ $rc -eq 0 ] && [ -n "$out" ]; then
+                printf '%s\n' "$out"
+                rm -f "$tmp" "$tmp.err"
+                return 0
+              fi
+              echo "  list_candidates attempt $attempt: rc=$rc out='${out:-<empty>}' err='${err:-}' -> retrying in 20s"
+              sleep 20
+            done
+            rm -f "$tmp" "$tmp.err"
+            echo "  list_candidates: giving up after 5 attempts, treating as no PRs"
+            return 1
+          }
+
+          readarray -t PRS < <(list_candidates || true)
 
           echo "Found ${#PRS[@]} candidate PR(s)"
 
@@ -85,7 +109,7 @@ jobs:
             for _ in $(seq 1 60); do
               BUCKET="$(gh pr checks "$pr" --repo "$GITHUB_REPOSITORY" \
                 --json name,bucket \
-                --jq '.[] | select(.name == "validate") | .bucket' 2>/dev/null | head -n1)"
+                --jq '.[] | select(.name == "validate") | .bucket' 2>/dev/null | head -n1 || true)"
               case "$BUCKET" in
                 pass) echo "  validate: PASS"; break ;;
                 fail|cancel|skipping)
@@ -106,8 +130,9 @@ jobs:
             # Re-check mergeability in case state changed while waiting. After another sibling
             # PR merges, main shifts and GitHub reports remaining PRs as UNKNOWN while it
             # recomputes — so re-poll UNKNOWN briefly before giving up.
+            set +e
             MERGEABLE="$(gh pr view "$pr" --repo "$GITHUB_REPOSITORY" \
-              --json mergeable --jq .mergeable)"
+              --json mergeable --jq .mergeable 2>/dev/null)"
             for _ in $(seq 1 20); do
               if [ "$MERGEABLE" != "UNKNOWN" ]; then
                 break
@@ -115,8 +140,9 @@ jobs:
               echo "  mergeable: UNKNOWN -> waiting 15s"
               sleep 15
               MERGEABLE="$(gh pr view "$pr" --repo "$GITHUB_REPOSITORY" \
-                --json mergeable --jq .mergeable)"
+                --json mergeable --jq .mergeable 2>/dev/null)"
             done
+            set -e
 
             if [ "$MERGEABLE" != "MERGEABLE" ]; then
               echo "  Not mergeable ($MERGEABLE) -> skipping"
