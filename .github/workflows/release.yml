@@ -4,9 +4,16 @@ on:
   push:
     tags:
       - "v*.*.*"
-  # auto-review.yml explicitly dispatches this workflow on the new tag, because a
-  # tag pushed with GITHUB_TOKEN does not cascade-trigger workflows.
+  # auto-review.yml explicitly dispatches this workflow because a tag pushed with
+  # GITHUB_TOKEN does not cascade-trigger workflows. It passes the tag as an input
+  # and dispatches on the default branch (whose workflow definition always has the
+  # trigger). `tag` falls back to github.ref_name for the tag-push trigger.
   workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (git tag must already exist)"
+        required: false
+        default: ""
 
 jobs:
   build:
@@ -28,7 +35,7 @@ jobs:
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref_name }}
+          tag: ${{ inputs.tag || github.ref_name }}
         run: |
           gh release create "$tag" \
               --repo="$GITHUB_REPOSITORY" \
