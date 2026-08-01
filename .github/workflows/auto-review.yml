@@ -31,7 +31,7 @@ jobs:
     outputs:
       merged: ${{ steps.merge.outputs.merged }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -46,7 +46,10 @@ jobs:
 
           MERGED=false
 
-          # List open, non-draft, mergeable PRs against main that don't carry the opt-out label.
+          # List open, non-draft PRs against main that don't carry the opt-out label.
+          # Mergeability is deliberately NOT filtered here — GitHub can transiently report
+          # UNKNOWN, so deciding mergeability is left to the per-PR loop below (which re-polls
+          # UNKNOWN).
           # Retry on empty/error: `gh pr list` has intermittently returned nothing in CI with
           # no error, which would silently skip the day's work.
           list_candidates() {
@@ -56,10 +59,9 @@ jobs:
               set +e
               gh pr list --repo "$GITHUB_REPOSITORY" \
                 --base main --state open \
-                --json number,isDraft,mergeable,labels \
+                --json number,isDraft,labels \
                 --jq '.[] |
                       select(.isDraft == false) |
-                      select(.mergeable == "MERGEABLE") |
                       select(([.labels[].name] | index("no-auto-merge")) != 1) |
                       .number' >"$tmp" 2>"$tmp.err"
               rc=$?
