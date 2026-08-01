@@ -4,10 +4,9 @@ on:
   push:
     tags:
       - "v*.*.*"
-  # auto-review.yml explicitly dispatches this workflow because a tag pushed with
-  # GITHUB_TOKEN does not cascade-trigger workflows. It passes the tag as an input
-  # and dispatches on the default branch (whose workflow definition always has the
-  # trigger). `tag` falls back to github.ref_name for the tag-push trigger.
+  # auto-release.yml explicitly dispatches this workflow when main has unreleased
+  # commits, because a tag pushed with GITHUB_TOKEN does not cascade-trigger
+  # workflows. `tag` falls back to github.ref_name for manual tag-push triggers.
   workflow_dispatch:
     inputs:
       tag:

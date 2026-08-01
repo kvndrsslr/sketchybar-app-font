@@ -1,0 +1,65 @@
+name: Auto Release
+
+on:
+  schedule:
+    # Daily at 06:00 UTC
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: auto-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+
+      - name: Bump version if main has unreleased commits
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Find the latest semver tag reachable from main.
+          LATEST_TAG="$(git describe --tags --abbrev=0 --match 'v*.*.*' origin/main 2>/dev/null || true)"
+          if [ -z "$LATEST_TAG" ]; then
+            echo "No existing semver tag found; cannot determine release baseline"
+            exit 1
+          fi
+
+          TAG_COMMIT="$(git rev-parse "$LATEST_TAG^{commit}")"
+          MAIN_HEAD="$(git rev-parse origin/main)"
+          echo "Latest tag: $LATEST_TAG ($TAG_COMMIT)"
+          echo "main HEAD:  $MAIN_HEAD"
+
+          if [ "$TAG_COMMIT" = "$MAIN_HEAD" ]; then
+            echo "main is already at the latest tag; nothing to release"
+            exit 0
+          fi
+
+          echo "main has unreleased commits; bumping patch version"
+
+          git checkout main
+          git pull --ff-only origin main
+          npm version patch
+          git push --follow-tags origin main
+
+          NEW_TAG="v$(node -p "require('./package.json').version")"
+          echo "Dispatching release.yml for tag $NEW_TAG"
+          gh workflow run release.yml --repo "$GITHUB_REPOSITORY" --ref main -f "tag=$NEW_TAG"
