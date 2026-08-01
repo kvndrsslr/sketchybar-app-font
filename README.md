@@ -67,3 +67,17 @@ icons=$(./path/to/icon_map.sh "Safari" "Finder" "Terminal")
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide on adding icons and submitting PRs.
+
+## Maintainer automation
+
+PR validation and releases are fully automated via GitHub Actions so the repo can be run hands-off:
+
+- **`validate.yml`** runs on every PR — including fork PRs — and only has a read-only token. There are **no custom/user secrets in this repo**; the only secret referenced anywhere is GitHub's auto-generated `GITHUB_TOKEN`, so running workflows on fork PRs is safe.
+- **`auto-review.yml`** runs daily (06:00 UTC, or manually via `workflow_dispatch`). It merges every open, non-draft, mergeable PR whose `validate` check passed, then bumps the patch version and pushes the tag, which triggers **`release.yml`** to build and cut a GitHub release.
+
+Two manual settings must be checked once in **Settings → Actions → General** (public repo):
+
+1. **Approval for running fork pull request workflows from contributors** — fork PR workflows always run with a read-only token and no secrets, so the only question is whether brand-new contributors prompt an approval. To be fully hands-off for newcomers, set it to **"Require approval for first-time contributors who are new to GitHub"** (least restrictive). Note the API warning: anyone who gets any merge is never re-gated, so a malicious actor could get one tiny PR in and then run unapproved workflows — acceptable here since the fork token has no secrets and runs on ephemeral GitHub-hosted runners only.
+2. **Workflow permissions** — leave on the restricted default ("Read repository contents and packages permissions"). `auto-review.yml` declares its own `contents: write` / `pull-requests: write` at the top level, which overrides the repo default, so no change is needed here.
+
+To exclude a PR from auto-merge, add the `no-auto-merge` label to it.

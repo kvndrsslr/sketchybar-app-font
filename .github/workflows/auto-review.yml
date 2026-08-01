@@ -1,0 +1,148 @@
+# Daily hands-off maintenance:
+#   1. Find open PRs targeting `main`
+#   2. Merge any that (a) are not draft, (b) are mergeable, (c) have a passing `validate` check,
+#      and (d) are not labelled `no-auto-merge`
+#   3. If at least one PR was merged, bump the patch version and push the tag.
+#      The tag push triggers `release.yml`, which builds and creates the GitHub release.
+#
+# SECURITY: This workflow holds a WRITE token, so it MUST NOT execute any untrusted
+# code (it never runs `pnpm install`/`validate` on PR contents). The per-PR validation
+# gate lives in `validate.yml`, which runs with a READ-ONLY token on every PR (including
+# forks). We only read the outcome of that check and act on it here.
+name: Auto Review
+
+on:
+  schedule:
+    # Daily at 06:00 UTC
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: auto-review
+  cancel-in-progress: false
+
+jobs:
+  auto-review:
+    runs-on: ubuntu-latest
+    outputs:
+      merged: ${{ steps.merge.outputs.merged }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Bail fast if there is nothing to do, so the version-bump step stays inert.
+      - name: Merge validated PRs
+        id: merge
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          MERGED=0
+          # List open, non-draft, mergeable PRs against main that don't carry the opt-out label.
+          readarray -t PRS < <(
+            gh pr list --repo "$GITHUB_REPOSITORY" \
+              --base main --state open \
+              --json number,isDraft,mergeable,labels \
+              --jq '.[] |
+                    select(.isDraft == false) |
+                    select(.mergeable == "MERGEABLE") |
+                    select(([.labels[].name] | index("no-auto-merge")) != 1) |
+                    .number'
+          )
+
+          echo "Found ${#PRS[@]} candidate PR(s)"
+
+          # Post a PR comment for an actionable blocker, but only once per reason so the
+          # daily run doesn't spam the author. Returns 0 if it (re)posted, 1 if already said.
+          notify() {
+            local pr="$1" body="$2"
+            if gh pr view "$pr" --repo "$GITHUB_REPOSITORY" \
+                --json comments \
+                --jq --arg body "$body" 'any(.comments[]; .body == $body)' \
+                | grep -qx true; then
+              echo "  [notify] already commented, skipping"
+              return 1
+            fi
+            gh pr comment "$pr" --repo "$GITHUB_REPOSITORY" --body "$body"
+            echo "  [notify] posted comment"
+            return 0
+          }
+
+          for pr in "${PRS[@]}"; do
+            echo "== PR #$pr =="
+
+            # Wait for the `validate` check to reach a terminal state (bounded).
+            # This is the ONLY validation gate; it runs in validate.yml with a read-only token.
+            # `bucket` is the easiest field to compare: pass | fail | pending | skipping | cancel.
+            BUCKET="pending"
+            for _ in $(seq 1 60); do
+              BUCKET="$(gh pr checks "$pr" --repo "$GITHUB_REPOSITORY" \
+                --json name,bucket \
+                --jq '.[] | select(.name == "validate") | .bucket' 2>/dev/null | head -n1)"
+              case "$BUCKET" in
+                pass) echo "  validate: PASS"; break ;;
+                fail|cancel|skipping)
+                  echo "  validate: $BUCKET -> skipping"; break ;;
+              esac
+              echo "  validate: $BUCKET -> waiting 30s"
+              sleep 30
+            done
+
+            if [ "$BUCKET" != "pass" ]; then
+              echo "  Not merging (validate not passed)"
+              if [ "$BUCKET" = "fail" ] || [ "$BUCKET" = "cancel" ]; then
+                notify "$pr" "The **validate** check did not pass, so this PR can't be auto-merged. Please fix the reported errors (see the check details) and push again — it will be retried at the next daily run." || true
+              fi
+              continue
+            fi
+
+            # Re-check mergeability in case state changed while waiting.
+            MERGEABLE="$(gh pr view "$pr" --repo "$GITHUB_REPOSITORY" \
+              --json mergeable --jq .mergeable)"
+            if [ "$MERGEABLE" != "MERGEABLE" ]; then
+              echo "  Not mergeable ($MERGEABLE) -> skipping"
+              if [ "$MERGEABLE" = "CONFLICTING" ]; then
+                notify "$pr" "This PR has merge conflicts and can't be auto-merged. Please resolve the conflicts and push again — it will be retried at the next daily run." || true
+              fi
+              continue
+            fi
+
+            gh pr merge "$pr" --repo "$GITHUB_REPOSITORY" --squash --delete-branch
+            echo "  Merged #$pr"
+            MERGED=1
+          done
+
+          echo "merged=$MERGED" >> "$GITHUB_OUTPUT"
+
+      - name: Bump version and push tag
+        if: steps.merge.outputs.merged == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git checkout main
+          git pull --ff-only origin main
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Creates a patch version bump commit + `v*.*.*` tag, then pushes both.
+          # The tag push fires release.yml (build + GitHub release).
+          npm version patch
+          git push --follow-tags origin main
+
+      - name: Summarize
+        if: always()
+        env:
+          MERGED: ${{ steps.merge.outputs.merged }}
+        run: |
+          if [ "$MERGED" = "true" ]; then
+            echo "Merged PR(s) and released a new patch version."
+          else
+            echo "No eligible changes today."
+          fi
