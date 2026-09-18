@@ -7,6 +7,7 @@
     "validate": "node ./validate.js",
     "build": "node ./build.js",
     "build:install": "node ./install.js",
+    "build:install:font": "node ./install.js --font-only",
     "build:dev": "node ./watch.js"
   },
   "keywords": [],

@@ -24,7 +24,19 @@ pnpm run build:install $HOME/.config/sketchybar/scripts/my-script.sh
 # same as build:install but watches changes to files in ./svgs and ./mappings and refires
 pnpm run build:dev
 pnpm run build:dev $HOME/.config/sketchybar/scripts/my-script.sh
+# - build the files
+# - install only the font to: $HOME/Library/Fonts/sketchybar-app-font.ttf
+# - no icon map helpers are written, existing ones are left untouched
+pnpm run build:install:font
 ```
+
+The install script accepts these options (also usable with `build:dev`):
+
+| option | effect |
+| --- | --- |
+| `--font-only` | install only the font, skip both icon map helpers |
+| `--skip-icon-map-sh` | leave an existing `icon_map.sh` untouched |
+| `--skip-icon-map-lua` | leave an existing `icon_map.lua` untouched |
 
 ## Configure Sketchybar
 
