@@ -64,6 +64,53 @@ icons=$(./path/to/icon_map.sh "Safari" "Finder" "Terminal")
 # ":safari: :finder: :terminal: "
 ```
 
+## Deriving the app mapping from the font
+
+`dist/sketchybar-app-font.ttf` is self-describing. Every icon glyph is mapped to a Private Use Area
+codepoint, and the app mapping is embedded in the font's `meta` table under the private data map tag
+`APPM`. Tool integrations can derive the whole mapping from the font alone — no need to ship or read
+`icon_map.*`.
+
+Schema of the `APPM` data map (JSON, UTF-8):
+
+```json
+{ "version": 1, "release": "2.0.87", "icons": [[ligature, codepoint, appNames | null], ...] }
+```
+
+- `version` — schema version of this payload (currently `1`).
+- `release` — the release this font was built from. The same version is written to the font's version
+  string (`nameID 5`) and `head.fontRevision`, so use it to detect that a cached lookup is stale.
+- `ligature` — the glyph's ligature, e.g. `:safari:` (same name as the `mappings/` file). Ligatures
+  still substitute, so existing configs keep working.
+- `codepoint` — the glyph's Private Use Area codepoint, e.g. `60412` (`U+EBFC`) for `:safari:`.
+- `appNames` — the app names that resolve to this icon (a trailing `*` means prefix match), or
+  `null` for utility icons without an app mapping.
+
+Codepoints are assigned in SVG directory order and will shift when icons are added, so derive them
+at runtime instead of hardcoding them.
+
+Reading the mapping (no font libraries required):
+
+```js
+const buf = fs.readFileSync("sketchybar-app-font.ttf");
+const tables = new Map();
+for (let i = 0; i < buf.readUInt16BE(4); i++) {
+    const o = 12 + i * 16;
+    tables.set(buf.toString("latin1", o, o + 4), buf.readUInt32BE(o + 8));
+}
+const meta = tables.get("meta");
+const dataMap = meta + 16; // first (and only) data map record
+const data = meta + buf.readUInt32BE(dataMap + 4);
+const { icons } = JSON.parse(buf.subarray(data, data + buf.readUInt32BE(dataMap + 8)));
+
+const byAppName = new Map();
+for (const [ligature, codepoint, appNames] of icons) {
+    for (const appName of appNames ?? []) {
+        byAppName.set(appName.replace(/\*$/, ""), String.fromCodePoint(codepoint));
+    }
+}
+```
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide on adding icons and submitting PRs.

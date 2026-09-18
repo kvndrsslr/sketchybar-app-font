@@ -25,7 +25,8 @@
     "website": false,
     "css": false,
     "emptyDist": true,
-    "useNameAsUnicode": true,
+    "useNameAsUnicode": false,
+    "addLigatures": true,
     "svgicons2svgfont": {
       "centerhorizontally": true,
       "centervertically": true,

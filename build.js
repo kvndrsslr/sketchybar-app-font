@@ -1,6 +1,7 @@
 import { execSync } from "node:child_process";
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
+import { annotateFont, fontFileName } from "./annotate.js";
 import { validate } from "./validate.js";
 
 export const startMarker = "### START-OF-ICON-MAP";
@@ -38,6 +39,9 @@ export function build() {
 		}
 		process.exit(1);
 	}
+
+	console.log("Annotating font with the app mapping...");
+	annotateFont(`./dist/${fontFileName}`);
 
 	const iconMap = fs.readdirSync("./mappings").map((file) => {
 		const iconName = file.replace(".svg", "");
