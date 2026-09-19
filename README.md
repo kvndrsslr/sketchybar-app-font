@@ -40,44 +40,7 @@ The install script accepts these options (also usable with `build:dev`):
 
 ## Configure Sketchybar
 
-### Using icon_map.sh
-
-```bash
-source ./path/to/icon_map.sh
-
-__icon_map "${app_name}"
-symbol_ligature="${icon_result}"
-```
-
-### Set up auto-replacing the icon map function in your own script
-
-1. Mark where the function should be inserted to:
-
-```bash
-### START-OF-ICON-MAP
-# Here be the function
-### END-OF-ICON-MAP
-```
-
-1. Run the install script with the argument pointing at the path of the file that has the markers:
-
-```bash
-# NOTE: On macOS, omit the -- separator
-pnpm run build:install $HOME/.config/sketchybar/scripts/my-script.sh
-```
-
-### Batch lookup
-
-`icon_map.sh` can also be called directly with multiple app names if you prefer to not source or inline it inside your script.
-
-```bash
-# Returns space-separated icon ligatures in the same order as the arguments
-icons=$(./path/to/icon_map.sh "Safari" "Finder" "Terminal")
-# ":safari: :finder: :terminal: "
-```
-
-## Deriving the app mapping from the font
-
+The recommended way to resolve app names to icons is to derive the mapping from the font itself.
 `dist/sketchybar-app-font.ttf` is self-describing. Every icon glyph is mapped to a Private Use Area
 codepoint, and the app mapping is embedded in the font's `meta` table under the private data map tag
 `APPM`. Tool integrations can derive the whole mapping from the font alone — no need to ship or read
@@ -122,6 +85,64 @@ for (const [ligature, codepoint, appNames] of icons) {
     }
 }
 ```
+
+## Legacy configuration
+
+The install script also generates `dist/icon_map.sh`, `dist/icon_map.lua`, and `dist/icon_map.json`.
+These are frozen snapshots of the mapping and are inferior to reading the font: they only carry
+ligatures (no codepoints), they can silently go stale relative to the installed font, and they have
+to be shipped or read separately. They are kept for existing configs — use the font-derived mapping
+above for new setups.
+
+### Using icon_map.sh
+
+```bash
+source ./path/to/icon_map.sh
+
+__icon_map "${app_name}"
+symbol_ligature="${icon_result}"
+```
+
+### Set up auto-replacing the icon map function in your own script
+
+1. Mark where the function should be inserted to:
+
+```bash
+### START-OF-ICON-MAP
+# Here be the function
+### END-OF-ICON-MAP
+```
+
+1. Run the install script with the argument pointing at the path of the file that has the markers:
+
+```bash
+# NOTE: On macOS, omit the -- separator
+pnpm run build:install $HOME/.config/sketchybar/scripts/my-script.sh
+```
+
+### Batch lookup
+
+`icon_map.sh` can also be called directly with multiple app names if you prefer to not source or inline it inside your script.
+
+```bash
+# Returns space-separated icon ligatures in the same order as the arguments
+icons=$(./path/to/icon_map.sh "Safari" "Finder" "Terminal")
+# ":safari: :finder: :terminal: "
+```
+
+### icon_map.lua
+
+A Lua table of `[[app name]] = ":ligature:"` pairs, for native Lua sketchybar configs.
+
+```lua
+local icon_map = require("helpers.icon_map")
+local icon = icon_map["Safari"] -- ":safari:"
+```
+
+### icon_map.json
+
+An array of `{ "iconName": ":ligature:", "appNames": [...] }` records, for integrations that cannot
+read the font's `meta` table.
 
 ## Contributing
 
