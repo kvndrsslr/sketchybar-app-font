@@ -39,9 +39,12 @@ chokidar.watch(["./mappings", "./svgs"]).on("change", (path) => {
 });
 
 function getPreviewHTML() {
+  // Every mapping points at an svg, so listing the svgs covers mapped app icons
+  // and utility icons (no mapping) alike
   const iconMap = fs
-    .readdirSync("./mappings")
-    .map((file) => file.replace(".svg", ""));
+    .readdirSync("./svgs")
+    .map((file) => file.replace(".svg", ""))
+    .sort();
 
   return `
 <!DOCTYPE html>
