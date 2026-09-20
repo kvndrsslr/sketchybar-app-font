@@ -5,17 +5,18 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 /**
- * Builds and installs the font; the icon map helpers are installed unless disabled.
+ * Builds and installs the font. Installing the icon map helpers is opt-in, so the font is the
+ * only thing written by default.
  *
  * @param {string} [replaceInScriptPath] file whose marked section gets the icon map function
  * @param {boolean} [refreshSketchybar] run `sketchybar --reload` afterwards
- * @param {{iconMapSh?: boolean, iconMapLua?: boolean}} [options] set either to false to leave
- *   an existing helper of that name untouched; both false installs the font only
+ * @param {{iconMapSh?: boolean, iconMapLua?: boolean}} [options] set either to true to also
+ *   install the helper of that name; both false (the default) installs the font only
  */
 export function install(
   replaceInScriptPath,
   refreshSketchybar = true,
-  { iconMapSh = true, iconMapLua = true } = {}
+  { iconMapSh = false, iconMapLua = false } = {}
 ) {
   const { iconMapBashFn } = build();
 
@@ -40,19 +41,19 @@ export function install(
       iconMapBashFn +
       scriptContents.slice(endMarkerIndex + endMarker.length);
     fs.writeFileSync(pathToScript, newScriptContents, "utf8");
-  } else {
-    if (iconMapSh) {
-      fs.copyFileSync(
-        "./dist/icon_map.sh",
-        `${process.env.HOME}/.config/sketchybar/helpers/icon_map.sh`
-      );
-    }
-    if (iconMapLua) {
-      fs.copyFileSync(
-        "./dist/icon_map.lua",
-        `${process.env.HOME}/.config/sketchybar/helpers/icon_map.lua`
-      );
-    }
+  }
+
+  if (iconMapSh) {
+    fs.copyFileSync(
+      "./dist/icon_map.sh",
+      `${process.env.HOME}/.config/sketchybar/helpers/icon_map.sh`
+    );
+  }
+  if (iconMapLua) {
+    fs.copyFileSync(
+      "./dist/icon_map.lua",
+      `${process.env.HOME}/.config/sketchybar/helpers/icon_map.lua`
+    );
   }
 
   if (refreshSketchybar) {
@@ -62,14 +63,15 @@ export function install(
 
 // only execute if run directly (ESM)
 // use url instead of __filename to support pnpm
-const usage = `usage: install.js [script.sh] [--font-only] [--skip-icon-map-sh] [--skip-icon-map-lua]
+const usage = `usage: install.js [script.sh] [--icon-map-sh] [--icon-map-lua]
 
-  script.sh            replace the marked section in this file instead of installing helpers
-  --font-only          install only the font, no icon map helpers
-  --skip-icon-map-sh   leave an existing icon_map.sh untouched
-  --skip-icon-map-lua  leave an existing icon_map.lua untouched`;
+  Installs the font only. Every other install target is opt-in.
 
-const knownFlags = new Set(["--font-only", "--skip-icon-map-sh", "--skip-icon-map-lua"]);
+  script.sh         replace the marked section in this file with the icon map function
+  --icon-map-sh     also install the icon_map.sh helper
+  --icon-map-lua    also install the icon_map.lua helper`;
+
+const knownFlags = new Set(["--icon-map-sh", "--icon-map-lua"]);
 
 /** Splits argv into the script path and the install options; exits on an unknown flag */
 export function parseArgs(args) {
@@ -88,8 +90,8 @@ export function parseArgs(args) {
   return {
     scriptPath: positional[0],
     options: {
-      iconMapSh: !flags.has("--font-only") && !flags.has("--skip-icon-map-sh"),
-      iconMapLua: !flags.has("--font-only") && !flags.has("--skip-icon-map-lua"),
+      iconMapSh: flags.has("--icon-map-sh"),
+      iconMapLua: flags.has("--icon-map-lua"),
     },
   };
 }

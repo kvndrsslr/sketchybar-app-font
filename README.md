@@ -14,29 +14,30 @@ All PRs are merged as quickly as possible. See [CONTRIBUTING.md](CONTRIBUTING.md
 pnpm install
 # - build the files
 # - install the font to: $HOME/Library/Fonts/sketchybar-app-font.ttf
-# - install the icon map script to: $HOME/.config/sketchybar/icon_map.sh
+# - reload sketchybar
 pnpm run build:install
-# - build the files
-# - install the font to: $HOME/Library/Fonts/sketchybar-app-font.ttf
-# - replace the icon map function in the given script
-# NOTE: On macOS, omit the -- separator to avoid argument parsing issues
-pnpm run build:install $HOME/.config/sketchybar/scripts/my-script.sh
 # same as build:install but watches changes to files in ./svgs and ./mappings and refires
 pnpm run build:dev
-pnpm run build:dev $HOME/.config/sketchybar/scripts/my-script.sh
-# - build the files
-# - install only the font to: $HOME/Library/Fonts/sketchybar-app-font.ttf
-# - no icon map helpers are written, existing ones are left untouched
-pnpm run build:install:font
 ```
 
-The install script accepts these options (also usable with `build:dev`):
+The install script installs the font and nothing else. Installing the icon map helpers or replacing
+the icon map function inside one of your scripts is opt-in — see
+[Legacy configuration](#legacy-configuration):
 
-| option | effect |
+| option / argument | effect |
 | --- | --- |
-| `--font-only` | install only the font, skip both icon map helpers |
-| `--skip-icon-map-sh` | leave an existing `icon_map.sh` untouched |
-| `--skip-icon-map-lua` | leave an existing `icon_map.lua` untouched |
+| `--icon-map-sh` | also install `icon_map.sh` to `$HOME/.config/sketchybar/helpers/icon_map.sh` |
+| `--icon-map-lua` | also install `icon_map.lua` to `$HOME/.config/sketchybar/helpers/icon_map.lua` |
+| `script.sh` | replace the marked section in this file with the icon map function |
+
+```bash
+# NOTE: On macOS, omit the -- separator to avoid argument parsing issues
+pnpm run build:install --icon-map-sh --icon-map-lua
+pnpm run build:install $HOME/.config/sketchybar/scripts/my-script.sh
+pnpm run build:dev --icon-map-lua
+```
+
+`build:dev` accepts the same options.
 
 ## Configure Sketchybar
 
@@ -88,11 +89,16 @@ for (const [ligature, codepoint, appNames] of icons) {
 
 ## Legacy configuration
 
-The install script also generates `dist/icon_map.sh`, `dist/icon_map.lua`, and `dist/icon_map.json`.
+The build also generates `dist/icon_map.sh`, `dist/icon_map.lua`, and `dist/icon_map.json`.
 These are frozen snapshots of the mapping and are inferior to reading the font: they only carry
 ligatures (no codepoints), they can silently go stale relative to the installed font, and they have
 to be shipped or read separately. They are kept for existing configs — use the font-derived mapping
 above for new setups.
+
+The install script does not write them unless asked to. Pass `--icon-map-sh` to install
+`icon_map.sh` to `$HOME/.config/sketchybar/helpers/icon_map.sh`, and `--icon-map-lua` to install
+`icon_map.lua` to `$HOME/.config/sketchybar/helpers/icon_map.lua`. Without those options any
+existing helper is left untouched.
 
 ### Using icon_map.sh
 
