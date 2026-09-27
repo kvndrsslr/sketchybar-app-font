@@ -14,12 +14,11 @@ const liveReloadServer = livereload.createServer();
 
 const app = express();
 
+app.get("/font.woff2", (req, res) => {
+  res.sendFile("sketchybar-app-font.woff2", {root: "./dist"});
+});
+
 app.get("*", (req, res) => {
-  // Build the path of the file using the URL pathname of the request.
-  if (req.url.indexOf("font.woff2") > 0) {
-    res.sendFile("sketchybar-app-font.woff2", {root: "./dist"});
-    return;
-  }
   res.send(getPreviewHTML());
 });
 
