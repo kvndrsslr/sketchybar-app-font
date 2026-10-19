@@ -4,19 +4,28 @@ on:
   push:
     tags:
       - "v*.*.*"
+  # auto-release.yml explicitly dispatches this workflow when main has unreleased
+  # commits, because a tag pushed with GITHUB_TOKEN does not cascade-trigger
+  # workflows. `tag` falls back to github.ref_name for manual tag-push triggers.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (git tag must already exist)"
+        required: false
+        default: ""
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v5
         with:
           version: latest
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: "20"
+          node-version: "26"
           cache: "pnpm"
       - run: pnpm i
       - run: pnpm run build
@@ -25,7 +34,7 @@ jobs:
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref_name }}
+          tag: ${{ inputs.tag || github.ref_name }}
         run: |
           gh release create "$tag" \
               --repo="$GITHUB_REPOSITORY" \

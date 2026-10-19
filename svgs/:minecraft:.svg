@@ -1,1 +1,42 @@
-<svg width="24mm" height="24mm" viewBox="0 0 24 24"><title>Minecraft creeper</title><path d="M6.517 20.27H9.14v-2.623h5.348v2.587h2.692v-7.953h-2.639V4.328h5.331v5.331H3.825V4.328h5.35v7.97H6.516Z" style="fill:#000;stroke:none;stroke-width:.0489457px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"/><rect width="23.833" height=".522" x=".092" y=".072" ry=".027" style="fill:#000;fill-rule:evenodd;stroke:#000;stroke-width:.196721"/><rect width="23.833" height=".522" x=".103" y="23.441" ry=".027" style="fill:#000;fill-rule:evenodd;stroke:#000;stroke-width:.196721"/><rect width="22.51" height=".527" x=".741" y="-.615" ry=".027" style="fill:#000;fill-rule:evenodd;stroke:#000;stroke-width:.192037" transform="rotate(89.966)"/><rect width="22.476" height=".527" x=".774" y="-23.927" ry=".027" style="fill:#000;fill-rule:evenodd;stroke:#000;stroke-width:.191913" transform="rotate(90)"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="24mm"
+   height="24mm"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname=":minecraft: copy.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="2.5774191"
+     inkscape:cx="39.962458"
+     inkscape:cy="88.266593"
+     inkscape:window-width="968"
+     inkscape:window-height="1044"
+     inkscape:window-x="742"
+     inkscape:window-y="40"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1" />
+  <path
+     d="M 0.23676503,4.1655368 V 8.0886089 H 4.1861806 8.1353327 L 8.1089897,9.3496716 C 8.0945,10.043296 8.0826456,10.921324 8.0826456,11.301197 V 11.99166 H 6.1311201 4.1795946 v 5.853786 5.853787 l 1.9017364,0.0108 c 1.0460999,0.0057 1.9151715,0.005 1.9317678,-0.0016 0.016333,-0.0068 0.029768,-0.880662 0.029768,-1.941515 V 19.83752 h 3.9428302 3.943093 v 1.931768 1.931505 h 1.971282 1.971548 V 17.826215 11.951881 H 17.939852 16.008348 V 10.020113 8.0886089 h 3.922808 3.923072 V 4.1921437 0.29567855 l -2.51554,-0.0266069 c -1.383822,-0.0144889 -3.1491,-0.0263435 -3.923072,-0.0263435 H 16.008348 V 4.1655368 8.0886089 H 12.065518 8.1226879 V 4.1655368 0.24272814 H 4.1795947 0.23676503 V 4.1655368"
+     stroke="none"
+     fill="#000000"
+     fill-rule="evenodd"
+     id="path1"
+     style="stroke-width:0.263434" />
+</svg>

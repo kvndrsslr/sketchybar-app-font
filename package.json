@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "sketchybar-app-font",
-  "version": "2.0.56",
+  "version": "3.0.11",
   "description": "App font for sketchybar, bootstrapped using SVGs from simple-bar",
   "scripts": {
     "validate": "node ./validate.js",
@@ -25,7 +25,8 @@
     "website": false,
     "css": false,
     "emptyDist": true,
-    "useNameAsUnicode": true,
+    "useNameAsUnicode": false,
+    "addLigatures": true,
     "svgicons2svgfont": {
       "centerhorizontally": true,
       "centervertically": true,

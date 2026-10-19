@@ -1,9 +1,1 @@
-<svg xml:space="preserve" width="24" height="24" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2"
-  clip-rule="evenodd" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="nonzero"
-    d="M6.57 2.164H2.603v19.578H6.57V11.509l2.715 5.17h5.43l2.715-5.17v10.233h3.968V2.164H17.43L12 12.449 6.57 2.164Z" />
-  <path fill="#2a2a2a" fill-rule="nonzero"
-    d="M6.57 4.252H2.603v17.49H6.57V11.509l2.715 5.17h5.43l2.715-5.17v10.233h3.968V4.252H17.43L12 14.538 6.57 4.252Z" />
-  <path fill="#858585" fill-rule="nonzero"
-    d="M6.57 6.08H2.603v15.662H6.57V11.509l2.715 5.17h5.43l2.715-5.17v10.233h3.968V6.079H17.43L12 16.312 6.57 6.08Z" />
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="24" height="24" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" clip-rule="evenodd"><path d="M0.690 12.050 L 0.700 23.820 3.080 23.820 L 5.460 23.820 5.480 17.715 L 5.500 11.610 7.114 14.685 L 8.729 17.760 11.993 17.750 L 15.257 17.740 16.859 14.690 L 18.460 11.641 18.480 17.730 L 18.500 23.820 20.890 23.830 L 23.280 23.841 23.280 12.060 L 23.280 0.279 20.891 0.290 L 18.503 0.300 15.294 6.380 C 13.529 9.724,12.061 12.498,12.032 12.545 C 11.984 12.624,11.707 12.113,8.721 6.455 L 5.462 0.280 3.071 0.280 L 0.680 0.280 0.690 12.050 " stroke="none" fill-rule="evenodd" fill="#000"></path></svg>
