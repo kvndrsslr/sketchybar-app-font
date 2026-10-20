@@ -43,7 +43,7 @@ export function build() {
 	console.log("Annotating font with the app mapping...");
 	annotateFont(`./dist/${fontFileName}`);
 
-	const iconMap = fs.readdirSync("./mappings").map((file) => {
+	const iconMap = fs.readdirSync("./mappings").filter((file) => file !== ".DS_Store").map((file) => {
 		const iconName = file.replace(".svg", "");
 		const appNames = fs.readFileSync(`./mappings/${file}`, "utf8").trim();
 		return {

@@ -23,8 +23,8 @@ function isValidSVG(filePath) {
 }
 
 export function validate() {
-  const mappingFiles = fs.readdirSync("./mappings");
-  const svgFiles = fs.readdirSync("./svgs");
+  const mappingFiles = fs.readdirSync("./mappings").filter((file) => file !== ".DS_Store");
+  const svgFiles = fs.readdirSync("./svgs").filter((file) => file !== ".DS_Store");
 
   const mappingNames = new Set(mappingFiles);
   const svgNames = new Set(svgFiles.map((f) => f.replace(".svg", "")));

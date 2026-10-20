@@ -140,7 +140,7 @@ export function buildMapping(fontPath, mappingsDir) {
 		.map(([ligature, codepoint]) => [ligature, codepoint, null]);
 	const byLigature = new Map(entries.map((entry) => [entry[0], entry]));
 
-	for (const file of fs.readdirSync(mappingsDir).sort()) {
+	for (const file of fs.readdirSync(mappingsDir).filter((file) => file !== ".DS_Store").sort()) {
 		const entry = byLigature.get(file);
 		if (!entry) {
 			missing.push(file);
