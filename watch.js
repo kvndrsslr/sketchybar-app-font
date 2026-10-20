@@ -29,7 +29,7 @@ app.listen(PORT, () => {
   console.log("Watching for changes in ./mappings and ./svgs\n");
 });
 
-chokidar.watch(["./mappings", "./svgs"]).on("change", (path) => {
+chokidar.watch(["./mappings", "./svgs"], { ignored: "**/.DS_Store" }).on("change", (path) => {
   console.log(`\nFile changed: ${path}`);
   console.log("Rebuilding...");
   install(scriptPath, false, options);
@@ -42,6 +42,7 @@ function getPreviewHTML() {
   // and utility icons (no mapping) alike
   const iconMap = fs
     .readdirSync("./svgs")
+    .filter((file) => file !== ".DS_Store")
     .map((file) => file.replace(".svg", ""))
     .sort();
 
