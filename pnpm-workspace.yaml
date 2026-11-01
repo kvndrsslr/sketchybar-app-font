@@ -1,2 +1,5 @@
+packages:
+  - "."
+
 allowBuilds:
   ttf2woff2: true
